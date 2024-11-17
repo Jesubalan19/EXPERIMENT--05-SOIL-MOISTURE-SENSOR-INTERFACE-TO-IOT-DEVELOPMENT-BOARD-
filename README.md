@@ -12,16 +12,9 @@ As previously stated, it acts as a variable resistor, with resistance varying ac
 ![image](https://github.com/vasanthkumarch/EXPERIMENT--05-SOIL-MOISTURE-SENSOR-INTERFACE-TO-IOT-DEVELOPMENT-BOARD-/assets/36288975/00e1751d-44e6-41e3-b261-717a657861be)
 The Module
 In addition, the sensor includes an electronic module that connects the probe to the Arduino.
-
-The module generates an output voltage based on the resistance of the probe, which is available at an Analog Output (AO) pin.
-
-The same signal is fed to an LM393 High Precision Comparator, which digitizes it and makes it available at a Digital Output (DO) pin.
-
 ![image](https://github.com/vasanthkumarch/EXPERIMENT--05-SOIL-MOISTURE-SENSOR-INTERFACE-TO-IOT-DEVELOPMENT-BOARD-/assets/36288975/85f21aed-ce9b-416c-8ad2-d0919eb32dbf)
 The module includes a potentiometer for adjusting the sensitivity of the digital output (DO).
-
 You can use it to set a threshold, so that when the soil moisture level exceeds the threshold, the module outputs LOW otherwise HIGH.
-
 This setup is very useful for triggering an action when a certain threshold is reached. For example, if the moisture level in the soil exceeds a certain threshold, you can activate a relay to start watering the plant.
 
 
@@ -97,12 +90,39 @@ GND is the ground pin.
 
 
 ## STM 32 CUBE PROGRAM :
+```
+  while (1)
+  {
 
+
+	  	  HAL_ADC_Start(&hadc);
+	  	  		HAL_ADC_PollForConversion(&hadc,100);
+	  	  		int adc_val = HAL_ADC_GetValue(&hadc);
+	  	  		HAL_ADC_Stop(&hadc);
+	  	  		HAL_Delay(500);
+
+	  	  		uint32_t soilmoist;
+	  soilmoist=adc_val/10.24;
+	  	  		printf("soilmoisture :%ld\n",soilmoist);
+	  	  		if(adc_val<500)
+	  	  		{
+	  	  			HAL_GPIO_Writepin(GPIOA,GPIO_PIN_0,GPIO_PIN_RESET);;
+	  	  		}
+	  	  		if(adc_val>500)
+	  	  		{
+	  	  			HAL_GPIO_WritePin(GPIO,GPIO_PIN_0,GPIO_PIN_SET);
+	  	  		}
+
+
+
+  }
+```
 
 
 ## Output screen shots on serial monitor   :
  
- 
+ ![384774030-1d81507d-500c-4d7f-bf9a-c90db08944d5](https://github.com/user-attachments/assets/891a9836-d9f7-44b9-87ca-77001fa8855a)
+
  
  
 ## Result :
